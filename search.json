@@ -1,0 +1,222 @@
+[
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "This notebook uses logging and pathlib to create a logging system.",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#import-required-modules",
+    "href": "core.html#import-required-modules",
+    "title": "core",
+    "section": "",
+    "text": "This notebook uses logging and pathlib to create a logging system.",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#sets-up-logging-system",
+    "href": "core.html#sets-up-logging-system",
+    "title": "core",
+    "section": "Sets Up Logging System",
+    "text": "Sets Up Logging System\n\ncreates a “logs” directory in the project root.\nwrites log messages to both the console and a log file (‘logs/openai_fc.log’),\napplies a consistent log format including timestamp, log level, and message, ensures basicConfig is only applied once.\n\nUse from openai_fc.core import logger in your code to use the logger.",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#core-function",
+    "href": "core.html#core-function",
+    "title": "core",
+    "section": "Core Function",
+    "text": "Core Function\nImplements the core funciton for OpenAI Function Calling.\n\nsource\n\nadd\n\n add (num_1:float, num_2:float)\n\nCore function for OpenAI Function Calling. Simply add up 2 numbers.\n\n\n\n\nType\nDetails\n\n\n\n\nnum_1\nfloat\nFirst number.\n\n\nnum_2\nfloat\nSecond number.\n\n\nReturns\nfloat\nSum of num_1 and num_2.",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "openai.html",
+    "href": "openai.html",
+    "title": "OpenAI Function Calling Implementation",
+    "section": "",
+    "text": "This notebook requires os and dotenv to load the environment variables, self-defined logger to access the log system, core funciton add and OpenAI’s asynchronous client, json to handle the OepnAI’s response.",
+    "crumbs": [
+      "OpenAI Function Calling Implementation"
+    ]
+  },
+  {
+    "objectID": "openai.html#import-required-modules",
+    "href": "openai.html#import-required-modules",
+    "title": "OpenAI Function Calling Implementation",
+    "section": "",
+    "text": "This notebook requires os and dotenv to load the environment variables, self-defined logger to access the log system, core funciton add and OpenAI’s asynchronous client, json to handle the OepnAI’s response.",
+    "crumbs": [
+      "OpenAI Function Calling Implementation"
+    ]
+  },
+  {
+    "objectID": "openai.html#load-enviroment-variables-and-set-global-variables.",
+    "href": "openai.html#load-enviroment-variables-and-set-global-variables.",
+    "title": "OpenAI Function Calling Implementation",
+    "section": "Load Enviroment Variables and Set Global variables.",
+    "text": "Load Enviroment Variables and Set Global variables.\nLoad environment variables regarding OpenAI.\n\nCode Note\nEnable override to keep variables updated.\nVariables with a name comprised of all capital letters should be constant:\n\nINS_ADD: OpenAI instruction for add.\nTOOLS: OpenAI tools schema.\nFUNCS: Functions used in TOOLS, via this we can directly call the functions involved in response.\n\nUse the global variable async_openai_client to ensure that the OpenAI client is initialized only once. This is time efficient.\nIMPORTANT:\nDocmentTbl of nbdev needs at least one parameter.\nFor examples:\ndef test() -&gt; int # Interger.\nwon’t have a parameter table in the final nbdev_preview.\ndef test(placeholder:int = None # Placeholder, no effect\n        ) -&gt; int # Interger.\nwill successfully show the parameter table.\nThis might be a bug.",
+    "crumbs": [
+      "OpenAI Function Calling Implementation"
+    ]
+  },
+  {
+    "objectID": "openai.html#implements-openai-function-calling-chatbot",
+    "href": "openai.html#implements-openai-function-calling-chatbot",
+    "title": "OpenAI Function Calling Implementation",
+    "section": "Implements OpenAI Function Calling Chatbot",
+    "text": "Implements OpenAI Function Calling Chatbot\nImplements an asynchronous OpenAI chatbot, and returns response text.\nNote that asynchronous concurrent execution is much faster than sequential execution, and it suits the discord.py module. It’s a good choice.\n\nCode Note\nOpenAI reasoning models (name started with “o”, E.g. “o3-mini”) has different api and response compared to normal models (name started with “gpt”, E.g. “gpt-4o”).\nCompared to normal models, reasoning models haven’t temperature parameter and first element of their response (resp.output[0]) is reasoning details rather than OpenAI’s function_call (starting from resp.output[1]), which indicates “id”, “call_id”, “type”, “name” and “arguments” of called funcitons.\n\nsource\n\n\nasync_chat_bot\n\n async_chat_bot (query:str)\n\nProcess user’s inputs and return the response text.\n\n\n\n\nType\nDetails\n\n\n\n\nquery\nstr\nUser’s input.\n\n\nReturns\nstr\nResponse text from OpenAI model.\n\n\n\n\nsource\n\n\nget_async_openai_client\n\n get_async_openai_client ()\n\nGet Asynchronous OpenAI client. Maek sure the client only initialize once.",
+    "crumbs": [
+      "OpenAI Function Calling Implementation"
+    ]
+  },
+  {
+    "objectID": "discord.html",
+    "href": "discord.html",
+    "title": "Discord Implementation",
+    "section": "",
+    "text": "Step 1: Create a Bot via Discord Developer Portal\n\nCreate a Bot via Discord Developer Portal\nGo to the Discord Developer Portal.\nClick “New Application”, give it a name.\nIn the left menu, go to “Bot” and click “Add Bot”.\nUnder “Privileged Gateway Intents”, enable at least: MESSAGE CONTENT INTENT, PRESENCE and GUILD MEMBERS if your bot needs them(Optional).\n\nStep 2: Get the Bot Token\n\nIn the “Bot” section, click “Reset Token” and copy it.\nStore the token in .env as DISCORD_TOKEN=&lt;Your-Discord-Token&gt;.\n\nStep 3: Invite the Bot to Your Server\n\nGo back to the Developer Portal, click “OAuth2”.\nIn “OAuth2 URL Generator” scopes, select: “bot”, “applications.commands” and “applications.commands.permissions.update”.\nIn “Bot Permissions” select: “Send Messages”, “Read Messages” etc.\nCopy the “Generated URL”, open it in a browser, and invite the bot to your server.",
+    "crumbs": [
+      "Discord Implementation"
+    ]
+  },
+  {
+    "objectID": "discord.html#set-up-the-discord-bot-configuration",
+    "href": "discord.html#set-up-the-discord-bot-configuration",
+    "title": "Discord Implementation",
+    "section": "",
+    "text": "Step 1: Create a Bot via Discord Developer Portal\n\nCreate a Bot via Discord Developer Portal\nGo to the Discord Developer Portal.\nClick “New Application”, give it a name.\nIn the left menu, go to “Bot” and click “Add Bot”.\nUnder “Privileged Gateway Intents”, enable at least: MESSAGE CONTENT INTENT, PRESENCE and GUILD MEMBERS if your bot needs them(Optional).\n\nStep 2: Get the Bot Token\n\nIn the “Bot” section, click “Reset Token” and copy it.\nStore the token in .env as DISCORD_TOKEN=&lt;Your-Discord-Token&gt;.\n\nStep 3: Invite the Bot to Your Server\n\nGo back to the Developer Portal, click “OAuth2”.\nIn “OAuth2 URL Generator” scopes, select: “bot”, “applications.commands” and “applications.commands.permissions.update”.\nIn “Bot Permissions” select: “Send Messages”, “Read Messages” etc.\nCopy the “Generated URL”, open it in a browser, and invite the bot to your server.",
+    "crumbs": [
+      "Discord Implementation"
+    ]
+  },
+  {
+    "objectID": "discord.html#run-the-bot",
+    "href": "discord.html#run-the-bot",
+    "title": "Discord Implementation",
+    "section": "Run the bot",
+    "text": "Run the bot\nRun bot.run(discord_token) in your Python code to start the bot. Or you can set the manual_test = True and run the code in the cell named Test Section below.",
+    "crumbs": [
+      "Discord Implementation"
+    ]
+  },
+  {
+    "objectID": "discord.html#use-the-bot-in-a-server",
+    "href": "discord.html#use-the-bot-in-a-server",
+    "title": "Discord Implementation",
+    "section": "Use the bot in a server",
+    "text": "Use the bot in a server\nType in !command or Slash command in Discord Server to use the bot.\nExample inputs:\n\n!cal three + 2\n/cal query: 3 + 6",
+    "crumbs": [
+      "Discord Implementation"
+    ]
+  },
+  {
+    "objectID": "discord.html#import-required-modules",
+    "href": "discord.html#import-required-modules",
+    "title": "Discord Implementation",
+    "section": "Import Required Modules",
+    "text": "Import Required Modules\nThis notebook uses the async_chat_bot and logger we implemented. We also need discord to implements Discord Bot.",
+    "crumbs": [
+      "Discord Implementation"
+    ]
+  },
+  {
+    "objectID": "discord.html#load-environment-variable",
+    "href": "discord.html#load-environment-variable",
+    "title": "Discord Implementation",
+    "section": "Load Environment Variable",
+    "text": "Load Environment Variable\nLoad environment variable DISCORD_TOKEN.",
+    "crumbs": [
+      "Discord Implementation"
+    ]
+  },
+  {
+    "objectID": "discord.html#implements-discord-bot",
+    "href": "discord.html#implements-discord-bot",
+    "title": "Discord Implementation",
+    "section": "Implements Discord Bot",
+    "text": "Implements Discord Bot\nIMPORTANT: You must have access to the message_content intent for the commands extension to function. This must be set both in the developer portal and within the code.\nFailure to do this will result in your bot not responding to any of your commands.\n\nCode Note\n@bot.command() can use *arg to pass an undetermined number of parameters. Since the args variable is a tuple, you can do anything you would usually do with one. But it doesn’t support slash command.\nTherefore, we need to use @bot.hybrid_command(). And use Keyword-Only Arguments instead because *arg isn’t supported.\n\n@bot.hybrid_command: Registers a command that works for both /slash and !prefix style commands.\n\nSpecifically, to tackle the problems we met, you need to await bot.tree.sync() in on_ready()to build the Slash command, await bot.process_commands(msg) in on_message() to process your command and await ctx.defer() to prevent Slash command from failing for not in time response.\n\nsource\n\n\nget_discord_bot\n\n get_discord_bot ()\n\nInitiliaze and return a Discord bo.",
+    "crumbs": [
+      "Discord Implementation"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "OpenAI Function Calling",
+    "section": "",
+    "text": "This project aims to demonstrate how to use OpenAI Function Calling by implementing:\n\nA minimal add function as a tool for arithmetic.\nAsynchronous chat interface with OpenAI via AsyncOpenAI.\nDiscord bot integration using discord.py.\n\nSee detailed explanation in nbs/*.ipynb.\nSince this is a private repo and Github Pages isn’t allowed in a private repo, we push the gh-pages branch to a public repo and set up Github Pages there. Here is the link.",
+    "crumbs": [
+      "OpenAI Function Calling"
+    ]
+  },
+  {
+    "objectID": "index.html#project-overview",
+    "href": "index.html#project-overview",
+    "title": "OpenAI Function Calling",
+    "section": "",
+    "text": "This project aims to demonstrate how to use OpenAI Function Calling by implementing:\n\nA minimal add function as a tool for arithmetic.\nAsynchronous chat interface with OpenAI via AsyncOpenAI.\nDiscord bot integration using discord.py.\n\nSee detailed explanation in nbs/*.ipynb.\nSince this is a private repo and Github Pages isn’t allowed in a private repo, we push the gh-pages branch to a public repo and set up Github Pages there. Here is the link.",
+    "crumbs": [
+      "OpenAI Function Calling"
+    ]
+  },
+  {
+    "objectID": "index.html#set-up-environment",
+    "href": "index.html#set-up-environment",
+    "title": "OpenAI Function Calling",
+    "section": "Set Up Environment",
+    "text": "Set Up Environment\nClone the repo and set up the environment. Change &lt;your-venv-name&gt; to the venv name you want, and run:\n\ngit clone https://github.com/wantsomechips/openai-fc.git\ncd openai-fc\npython -m venv &lt;your-venv-name&gt;\nsource ./&lt;your-venv-name&gt;/bin/activate\npip install -e \".[dev]\"\n\nCreate a .env file in the project root with the following variables:\nOPENAI_API_KEY=\n\nOPENAI_MODEL=gpt-4o\n\nDISCORD_TOKEN=",
+    "crumbs": [
+      "OpenAI Function Calling"
+    ]
+  },
+  {
+    "objectID": "index.html#notebooks-overviw",
+    "href": "index.html#notebooks-overviw",
+    "title": "OpenAI Function Calling",
+    "section": "Notebooks Overviw",
+    "text": "Notebooks Overviw\n\nnbs/00_core.ipynb: Core arithmetic tool and logger definition.\nnbs/01_openai.ipynb: OpenAI tools, function calling logic, async chat bot.\nnbs/02_discord.ipynb: Discord bot setup, command handlers.\nnbs/index.ipynb: Documentation.\n\nTests are included within the notebooks’ cells using #| hide.",
+    "crumbs": [
+      "OpenAI Function Calling"
+    ]
+  },
+  {
+    "objectID": "index.html#module-structure",
+    "href": "index.html#module-structure",
+    "title": "OpenAI Function Calling",
+    "section": "Module Structure",
+    "text": "Module Structure\n\nopenai_fc.core\n\nadd: Core function used for OpenAI Function Calling.\nlogger: Custom logger.\n\nopenai_fc.openai_fc\n\nINS_ADD, TOOLS, FUNCS: Instruction, tool schemas and registered functions dictionary.\nget_async_openai_client(): Initialize async OpenAI client.\nasync_chat_bot(query: str): Async chatbot using function calling.\n\nopenai_fc.discord_bot\n\nget_discord_bot(): Initialize Discord Bot using async OpenAI client.\nSlash and prefix command in Discord Server, /cal or !cal, will call add() through OpenAI API.",
+    "crumbs": [
+      "OpenAI Function Calling"
+    ]
+  },
+  {
+    "objectID": "index.html#license",
+    "href": "index.html#license",
+    "title": "OpenAI Function Calling",
+    "section": "License",
+    "text": "License\nThis project is licensed under the Apache 2.0 License. See LICENSE for details.",
+    "crumbs": [
+      "OpenAI Function Calling"
+    ]
+  },
+  {
+    "objectID": "index.html#author",
+    "href": "index.html#author",
+    "title": "OpenAI Function Calling",
+    "section": "Author",
+    "text": "Author\nwantSomeChips\nGitHub Profile",
+    "crumbs": [
+      "OpenAI Function Calling"
+    ]
+  }
+]
